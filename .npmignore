@@ -12,3 +12,4 @@ lib/test
 .nvmrc
 .babelrc
 .eslintrc
+.vscode
