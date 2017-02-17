@@ -22,9 +22,6 @@ export const TAG_PROPERTIES = {
     ITEM_PROP: "itemprop"
 };
 
-export const REACT_TAG_MAP = {
-    "charset": "charSet",
-    "http-equiv": "httpEquiv",
-    "itemprop": "itemProp",
+export const INFERNO_TAG_MAP = {
     "class": "className"
 };

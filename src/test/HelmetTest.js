@@ -1,11 +1,10 @@
 /* eslint max-nested-callbacks: [1, 5] */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import ReactServer from "react-dom/server";
+import Inferno from "inferno";
+import InfernoServer from "inferno-server";
 import Helmet from "../Helmet";
 
-const HELMET_ATTRIBUTE = "data-react-helmet";
+const HELMET_ATTRIBUTE = "data-inferno-helmet";
 
 describe("Helmet", () => {
     let headElement;
@@ -17,13 +16,13 @@ describe("Helmet", () => {
     });
 
     afterEach(() => {
-        ReactDOM.unmountComponentAtNode(container);
+        Inferno.render(null, container);
     });
 
     describe("api", () => {
         describe("title", () => {
             it("can update page title", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         defaultTitle={"Fallback"}
                         title={"Test Title"}
@@ -35,7 +34,7 @@ describe("Helmet", () => {
             });
 
             it("can update page title with multiple children", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet title={"Test Title"} />
                         <Helmet title={"Child One Title"} />
@@ -48,7 +47,7 @@ describe("Helmet", () => {
             });
 
             it("will set title based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet title={"Main Title"} />
                         <Helmet title={"Nested Title"} />
@@ -60,7 +59,7 @@ describe("Helmet", () => {
             });
 
             it("will set title using deepest nested component with a defined title", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet title={"Main Title"} />
                         <Helmet />
@@ -72,7 +71,7 @@ describe("Helmet", () => {
             });
 
             it("will use defaultTitle if no title is defined", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         defaultTitle={"Fallback"}
                         title={""}
@@ -85,7 +84,7 @@ describe("Helmet", () => {
             });
 
             it("will use a titleTemplate if defined", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         defaultTitle={"Fallback"}
                         title={"Test"}
@@ -98,7 +97,7 @@ describe("Helmet", () => {
             });
 
             it("will replace multiple title strings in titleTemplate", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         title={"Test"}
                         titleTemplate={"This is a %s of the titleTemplate feature. Another %s."}
@@ -110,7 +109,7 @@ describe("Helmet", () => {
             });
 
             it("will use a titleTemplate based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             title={"Test"}
@@ -128,7 +127,7 @@ describe("Helmet", () => {
             });
 
             it("will merge deepest component title with nearest upstream titleTemplate", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             title={"Test"}
@@ -145,7 +144,7 @@ describe("Helmet", () => {
             it("will render dollar characters in a title correctly when titleTemplate present", () => {
                 const dollarTitle = "te$t te$$t te$$$t te$$$$t";
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet title={dollarTitle}
                             titleTemplate={"This is a %s"}
                     />,
@@ -158,7 +157,7 @@ describe("Helmet", () => {
             it("will not encode all characters with HTML character entity equivalents", () => {
                 const chineseTitle = "膣膗 鍆錌雔";
 
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet title={chineseTitle} />
                     </div>,
@@ -169,7 +168,7 @@ describe("Helmet", () => {
             });
 
             it("page tite with prop itemprop", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         defaultTitle={"Fallback"}
                         title={"Test Title with itemProp"}
@@ -186,7 +185,7 @@ describe("Helmet", () => {
 
         describe("title attributes", () => {
             it("update title attributes", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         titleAttributes={{
                             itemprop: "name"
@@ -202,7 +201,7 @@ describe("Helmet", () => {
             });
 
             it("set attributes based on the deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             titleAttributes={{
@@ -227,7 +226,7 @@ describe("Helmet", () => {
             });
 
             it("handle valueless attributes", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         titleAttributes={{
                             "hidden": undefined
@@ -243,7 +242,7 @@ describe("Helmet", () => {
             });
 
             it("clears title attributes that are handled within helmet", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         titleAttributes={{
                             "lang": "en",
@@ -253,7 +252,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -268,7 +267,7 @@ describe("Helmet", () => {
 
         describe("html attributes", () => {
             it("update html attributes", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "class": "myClassName",
@@ -286,7 +285,7 @@ describe("Helmet", () => {
             });
 
             it("set attributes based on the deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             htmlAttributes={{
@@ -309,7 +308,7 @@ describe("Helmet", () => {
             });
 
             it("handle valueless attributes", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "amp": undefined
@@ -325,7 +324,7 @@ describe("Helmet", () => {
             });
 
             it("clears html attributes that are handled within helmet", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "lang": "en",
@@ -335,7 +334,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -348,7 +347,7 @@ describe("Helmet", () => {
             });
 
             it("updates with multiple additions and removals - overwrite and new", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "lang": "en",
@@ -358,7 +357,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "lang": "ja",
@@ -379,7 +378,7 @@ describe("Helmet", () => {
             });
 
             it("updates with multiple additions and removals - all new", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "lang": "en",
@@ -389,7 +388,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         htmlAttributes={{
                             "id": "html-tag",
@@ -415,7 +414,7 @@ describe("Helmet", () => {
                 });
 
                 it("will not be cleared", () => {
-                    ReactDOM.render(
+                    Inferno.render(
                         <Helmet />,
                         container
                     );
@@ -427,7 +426,7 @@ describe("Helmet", () => {
                 });
 
                 it("will be overwritten if specified in helmet", () => {
-                    ReactDOM.render(
+                    Inferno.render(
                         <Helmet
                             htmlAttributes={{
                                 "test": "helmet-attr"
@@ -443,7 +442,7 @@ describe("Helmet", () => {
                 });
 
                 it("can be cleared once it is managed in helmet", () => {
-                    ReactDOM.render(
+                    Inferno.render(
                         <Helmet
                             htmlAttributes={{
                                 "test": "helmet-attr"
@@ -452,7 +451,7 @@ describe("Helmet", () => {
                         container
                     );
 
-                    ReactDOM.render(
+                    Inferno.render(
                         <Helmet />,
                         container
                     );
@@ -468,7 +467,7 @@ describe("Helmet", () => {
         describe("onChangeClientState", () => {
             it("when handling client state change, calls the function with new state, addedTags and removedTags ", () => {
                 const spy = sinon.spy();
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             base={{"href": "http://mysite.com/"}}
@@ -495,29 +494,29 @@ describe("Helmet", () => {
 
                 expect(addedTags).to.have.property("baseTag");
                 expect(addedTags.baseTag).to.have.deep.property("[0]");
-                expect(addedTags.baseTag[0].outerHTML).to.equal(`<base href="http://mysite.com/" data-react-helmet="true">`);
+                expect(addedTags.baseTag[0].outerHTML).to.equal(`<base href="http://mysite.com/" ${HELMET_ATTRIBUTE}="true">`);
 
                 expect(addedTags).to.have.property("metaTags");
                 expect(addedTags.metaTags).to.have.deep.property("[0]");
-                expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta charset="utf-8" data-react-helmet="true">`);
+                expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta charset="utf-8" ${HELMET_ATTRIBUTE}="true">`);
 
                 expect(addedTags).to.have.property("linkTags");
                 expect(addedTags.linkTags).to.have.deep.property("[0]");
-                expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/helmet" rel="canonical" data-react-helmet="true">`);
+                expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/helmet" rel="canonical" ${HELMET_ATTRIBUTE}="true">`);
 
                 expect(addedTags).to.have.property("scriptTags");
                 expect(addedTags.scriptTags).to.have.deep.property("[0]");
-                expect(addedTags.scriptTags[0].outerHTML).to.equal(`<script src="http://localhost/test.js" type="text/javascript" data-react-helmet="true"></script>`);
+                expect(addedTags.scriptTags[0].outerHTML).to.equal(`<script src="http://localhost/test.js" type="text/javascript" ${HELMET_ATTRIBUTE}="true"></script>`);
 
                 expect(removedTags).to.be.empty;
             });
 
             it("calls the deepest defined callback with the deepest state", () => {
                 const spy = sinon.spy();
-                ReactDOM.render(
+                Inferno.render(
                     <div>
-                        <Helmet title={"Main Title"} onChangeClientState={spy} />
-                        <Helmet title={"Deeper Title"} />
+                        <Helmet title="Main Title" onChangeClientState={spy} />
+                        <Helmet title="Deeper Title" />
                     </div>,
                     container
                 );
@@ -530,7 +529,7 @@ describe("Helmet", () => {
 
         describe("base tag", () => {
             it("can update base tag", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         base={{"href": "http://mysite.com/"}}
                     />,
@@ -549,14 +548,14 @@ describe("Helmet", () => {
             });
 
             it("will clear the base tag if one is not specified", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         base={{"href": "http://mysite.com/"}}
                     />,
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -568,7 +567,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'href' will not be accepted", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         base={{"property": "won't work"}}
                     />,
@@ -582,7 +581,7 @@ describe("Helmet", () => {
             });
 
             it("will set base tag based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             base={{"href": "http://mysite.com/"}}
@@ -610,7 +609,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         base={{"href": undefined}}
                     />,
@@ -625,7 +624,7 @@ describe("Helmet", () => {
 
         describe("meta tags", () => {
             it("can update meta tags", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={[
                             {"charset": "utf-8"},
@@ -654,14 +653,14 @@ describe("Helmet", () => {
             });
 
             it("will clear all meta tags if none are specified", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={[{"name": "description", "content": "Test description"}]}
                     />,
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -673,7 +672,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'name', 'http-equiv', 'property', 'charset', or 'itemprop' will not be accepted", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={[{"href": "won't work"}]}
                     />,
@@ -687,7 +686,7 @@ describe("Helmet", () => {
             });
 
             it("will set meta tags based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             meta={[
@@ -741,7 +740,7 @@ describe("Helmet", () => {
             });
 
             it("will allow duplicate meta tags if specified in the same component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={[
                             {"name": "description", "content": "Test description"},
@@ -778,7 +777,7 @@ describe("Helmet", () => {
             });
 
             it("will override duplicate meta tags with single meta tag in a nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             meta={[
@@ -813,7 +812,7 @@ describe("Helmet", () => {
             });
 
             it("will override single meta tag with duplicate meta tags in a nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             meta={[
@@ -857,7 +856,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={[
                             {"name": undefined, "content": "Inner duplicate description"}
@@ -872,7 +871,7 @@ describe("Helmet", () => {
             });
 
             it("fails gracefully when meta is wrong shape", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         meta={{"name": "title", "content": "some title"}}
                     />,
@@ -887,7 +886,7 @@ describe("Helmet", () => {
 
         describe("link tags", () => {
             it("can update link tags", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         link={[
                             {"href": "http://localhost/helmet", "rel": "canonical"},
@@ -911,7 +910,7 @@ describe("Helmet", () => {
             });
 
             it("will clear all link tags if none are specified", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         link={[
                             {"href": "http://localhost/helmet", "rel": "canonical"}
@@ -920,7 +919,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -933,7 +932,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'href' or 'rel' will not be accepted, even if they are valid for other tags", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         link={[{"http-equiv": "won't work"}]}
                     />,
@@ -948,7 +947,7 @@ describe("Helmet", () => {
             });
 
             it("tags 'rel' and 'href' will properly use 'rel' as the primary identification for this tag, regardless of ordering", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             link={[{"href": "http://localhost/helmet", "rel": "canonical"}]}
@@ -981,7 +980,7 @@ describe("Helmet", () => {
             });
 
             it("tags with rel='stylesheet' will use the href as the primary identification of the tag, regardless of ordering", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             link={[
@@ -1028,7 +1027,7 @@ describe("Helmet", () => {
             });
 
             it("will set link tags based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             link={[
@@ -1086,7 +1085,7 @@ describe("Helmet", () => {
             });
 
             it("will allow duplicate link tags if specified in the same component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         link={[
                             {"rel": "canonical", "href": "http://localhost/helmet"},
@@ -1123,7 +1122,7 @@ describe("Helmet", () => {
             });
 
             it("will override duplicate link tags with a single link tag in a nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             link={[
@@ -1158,7 +1157,7 @@ describe("Helmet", () => {
             });
 
             it("will override single link tag with duplicate link tags in a nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             link={[
@@ -1202,7 +1201,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         link={[
                             {"rel": "icon", "sizes": "192x192", "href": null},
@@ -1238,7 +1237,7 @@ describe("Helmet", () => {
                     "url": "http://localhost/helmet"
                   }
                 `;
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[
                             {"src": "http://localhost/test.js", "type": "text/javascript"},
@@ -1266,7 +1265,7 @@ describe("Helmet", () => {
             });
 
             it("will clear all scripts tags if none are specified", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[
                             {"src": "http://localhost/test.js", "type": "text/javascript"}
@@ -1275,7 +1274,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -1287,7 +1286,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'src' will not be accepted", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[{"property": "won't work"}]}
                     />,
@@ -1301,7 +1300,7 @@ describe("Helmet", () => {
             });
 
             it("will set script tags based on deepest nested component", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <div>
                         <Helmet
                             script={[
@@ -1345,7 +1344,7 @@ describe("Helmet", () => {
 
 
             it("sets undefined attribute values to empty strings", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[
                             {
@@ -1366,7 +1365,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute (src) is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[
                             {
@@ -1384,7 +1383,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute (innerHTML) is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         script={[
                             {
@@ -1404,7 +1403,7 @@ describe("Helmet", () => {
         describe("noscript tags", () => {
             it("can update noscript tags", () => {
                 const noscriptInnerHTML = `<link rel="stylesheet" type="text/css" href="foo.css" />`;
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet noscript={[{id: "bar", innerHTML: noscriptInnerHTML}]} />,
                     container
                 );
@@ -1417,9 +1416,9 @@ describe("Helmet", () => {
             });
 
             it("will clear all noscripts tags if none are specified", () => {
-                ReactDOM.render(<Helmet noscript={[{id: "bar"}]} />, container);
+                Inferno.render(<Helmet noscript={[{id: "bar"}]} />, container);
 
-                ReactDOM.render(<Helmet />, container);
+                Inferno.render(<Helmet />, container);
 
                 const existingTags = headElement.querySelectorAll(`script[${HELMET_ATTRIBUTE}]`);
 
@@ -1428,7 +1427,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'innerHTML' will not be accepted", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet noscript={[{"property": "won't work"}]} />,
                     container
                 );
@@ -1440,7 +1439,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         noscript={[
                             {
@@ -1469,7 +1468,7 @@ describe("Helmet", () => {
                         font-size: 12px;
                     }
                 `;
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         style={[
                             {
@@ -1515,7 +1514,7 @@ describe("Helmet", () => {
                         background-color: green;
                     }
                 `;
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         style={[
                             {
@@ -1527,7 +1526,7 @@ describe("Helmet", () => {
                     container
                 );
 
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet />,
                     container
                 );
@@ -1539,7 +1538,7 @@ describe("Helmet", () => {
             });
 
             it("tags without 'cssText' will not be accepted", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         style={[{"property": "won't work"}]}
                     />,
@@ -1553,7 +1552,7 @@ describe("Helmet", () => {
             });
 
             it("won't render tag when primary attribute is null", () => {
-                ReactDOM.render(
+                Inferno.render(
                     <Helmet
                         style={[
                             {
@@ -1575,19 +1574,19 @@ describe("Helmet", () => {
         const stringifiedHtmlAttributes = `lang="ga" class="myClassName"`;
         const stringifiedTitle = `<title ${HELMET_ATTRIBUTE}="true">Dangerous &lt;script&gt; include</title>`;
         const stringifiedTitleWithItemprop = `<title ${HELMET_ATTRIBUTE}="true" itemprop="name">Title with Itemprop</title>`;
-        const stringifiedBaseTag = `<base ${HELMET_ATTRIBUTE}="true" target="_blank" href="http://localhost/"/>`;
+        const stringifiedBaseTag = `<base ${HELMET_ATTRIBUTE}="true" target="_blank" href="http://localhost/">`;
 
         const stringifiedMetaTags = [
-            `<meta ${HELMET_ATTRIBUTE}="true" charset="utf-8"/>`,
-            `<meta ${HELMET_ATTRIBUTE}="true" name="description" content="Test description &amp; encoding of special characters like &#x27; &quot; &gt; &lt; \`"/>`,
-            `<meta ${HELMET_ATTRIBUTE}="true" http-equiv="content-type" content="text/html"/>`,
-            `<meta ${HELMET_ATTRIBUTE}="true" property="og:type" content="article"/>`,
-            `<meta ${HELMET_ATTRIBUTE}="true" itemprop="name" content="Test name itemprop"/>`
+            `<meta ${HELMET_ATTRIBUTE}="true" charset="utf-8">`,
+            `<meta ${HELMET_ATTRIBUTE}="true" name="description" content="Test description &amp; encoding of special characters like &#039; &quot; &gt; &lt; \`">`,
+            `<meta ${HELMET_ATTRIBUTE}="true" http-equiv="content-type" content="text/html">`,
+            `<meta ${HELMET_ATTRIBUTE}="true" property="og:type" content="article">`,
+            `<meta ${HELMET_ATTRIBUTE}="true" itemprop="name" content="Test name itemprop">`
         ].join("");
 
         const stringifiedLinkTags = [
-            `<link ${HELMET_ATTRIBUTE}="true" href="http://localhost/helmet" rel="canonical"/>`,
-            `<link ${HELMET_ATTRIBUTE}="true" href="http://localhost/style.css" rel="stylesheet" type="text/css"/>`
+            `<link ${HELMET_ATTRIBUTE}="true" href="http://localhost/helmet" rel="canonical">`,
+            `<link ${HELMET_ATTRIBUTE}="true" href="http://localhost/style.css" rel="stylesheet" type="text/css">`
         ].join("");
 
         const stringifiedScriptTags = [
@@ -1610,7 +1609,7 @@ describe("Helmet", () => {
         });
 
         it("will html encode title", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title="Dangerous <script> include"
                 />,
@@ -1625,8 +1624,8 @@ describe("Helmet", () => {
             expect(head.title.toString()).to.equal(stringifiedTitle);
         });
 
-        it("will render title as React component", () => {
-            ReactDOM.render(
+        it("will render title as an Inferno component", () => {
+            Inferno.render(
                 <Helmet
                     title={"Dangerous <script> include"}
                 />,
@@ -1650,7 +1649,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "title");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {titleComponent}
                 </div>
@@ -1663,8 +1662,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render title with itemprop name as React component", () => {
-            ReactDOM.render(
+        it("will render title with itemprop name as an Inferno component", () => {
+            Inferno.render(
                 <Helmet
                     title={"Title with Itemprop"}
                     titleAttributes={{itemprop: "name"}}
@@ -1689,7 +1688,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "title");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {titleComponent}
                 </div>
@@ -1702,8 +1701,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render base tag as React component", () => {
-            ReactDOM.render(
+        it("will render base tag as an Inferno component", () => {
+            Inferno.render(
                 <Helmet
                     base={{"target": "_blank", "href": "http://localhost/"}}
                 />,
@@ -1727,7 +1726,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "base");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {baseComponent}
                 </div>
@@ -1740,8 +1739,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render meta tags as React components", () => {
-            ReactDOM.render(
+        it("will render meta tags as Inferno components", () => {
+            Inferno.render(
                 <Helmet
                     meta={[
                         {"charset": "utf-8"},
@@ -1771,7 +1770,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "meta");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {metaComponent}
                 </div>
@@ -1784,8 +1783,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render link tags as React components", () => {
-            ReactDOM.render(
+        it("will render link tags as Inferno components", () => {
+            Inferno.render(
                 <Helmet
                     link={[
                         {"href": "http://localhost/helmet", "rel": "canonical"},
@@ -1812,7 +1811,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "link");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {linkComponent}
                 </div>
@@ -1825,8 +1824,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render script tags as React components", () => {
-            ReactDOM.render(
+        it("will render script tags as Inferno components", () => {
+            Inferno.render(
                 <Helmet
                     script={[
                         {"src": "http://localhost/test.js", "type": "text/javascript"},
@@ -1853,7 +1852,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "script");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {scriptComponent}
                 </div>
@@ -1866,8 +1865,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render noscript tags as React components", () => {
-            ReactDOM.render(
+        it("will render noscript tags as Inferno components", () => {
+            Inferno.render(
                 <Helmet
                   noscript={[
                     {id: "foo", innerHTML: '<link rel="stylesheet" type="text/css" href="/style.css" />'},
@@ -1894,7 +1893,7 @@ describe("Helmet", () => {
                     .that.contains.property("type", "noscript");
             });
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {noscriptComponent}
                 </div>
@@ -1907,8 +1906,8 @@ describe("Helmet", () => {
                 }</div>`);
         });
 
-        it("will render style tags as React components", () => {
-            ReactDOM.render(
+        it("will render style tags as Inferno components", () => {
+            Inferno.render(
                 <Helmet
                     style={[
                         {
@@ -1935,7 +1934,7 @@ describe("Helmet", () => {
                 .to.be.an("array")
                 .that.has.length.of(2);
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {styleComponent}
                 </div>
@@ -1949,7 +1948,7 @@ describe("Helmet", () => {
         });
 
         it("will render title tag as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title={"Dangerous <script> include"}
                 />,
@@ -1967,7 +1966,7 @@ describe("Helmet", () => {
         });
 
         it("will render title with itemprop name as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title={"Title with Itemprop"}
                     titleAttributes={{itemprop: "name"}}
@@ -1987,7 +1986,7 @@ describe("Helmet", () => {
         });
 
         it("will render base tags as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     base={{"target": "_blank", "href": "http://localhost/"}}
                 />,
@@ -2005,7 +2004,7 @@ describe("Helmet", () => {
         });
 
         it("will render meta tags as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     meta={[
                         {"charset": "utf-8"},
@@ -2029,7 +2028,7 @@ describe("Helmet", () => {
         });
 
         it("will render link tags as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     link={[
                         {"href": "http://localhost/helmet", "rel": "canonical"},
@@ -2050,7 +2049,7 @@ describe("Helmet", () => {
         });
 
         it("will render script tags as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     script={[
                         {"src": "http://localhost/test.js", "type": "text/javascript"},
@@ -2071,7 +2070,7 @@ describe("Helmet", () => {
         });
 
         it("will render style tags as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     style={[
                         {
@@ -2098,7 +2097,7 @@ describe("Helmet", () => {
         });
 
         it("will render html attributes as component", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     htmlAttributes={{
                         lang: "ga",
@@ -2113,7 +2112,7 @@ describe("Helmet", () => {
 
             expect(attrs).to.exist;
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <html lang="en" {...attrs} />
             );
 
@@ -2123,7 +2122,7 @@ describe("Helmet", () => {
         });
 
         it("will render html attributes as string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     htmlAttributes={{
                         lang: "ga",
@@ -2147,7 +2146,7 @@ describe("Helmet", () => {
             const chineseTitle = "膣膗 鍆錌雔";
             const stringifiedChineseTitle = `<title ${HELMET_ATTRIBUTE}="true">${chineseTitle}</title>`;
 
-            ReactDOM.render(
+            Inferno.render(
                 <div>
                     <Helmet title={chineseTitle} />
                 </div>,
@@ -2165,7 +2164,7 @@ describe("Helmet", () => {
         });
 
         it("rewind() provides a fallback object for empty Helmet state", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <div />,
                 container
             );
@@ -2184,7 +2183,7 @@ describe("Helmet", () => {
             expect(head.title.toString()).to.equal(`<title ${HELMET_ATTRIBUTE}="true"></title>`);
             expect(head.title).to.respondTo("toComponent");
 
-            const markup = ReactServer.renderToStaticMarkup(
+            const markup = InfernoServer.renderToStaticMarkup(
                 <div>
                     {head.title.toComponent()}
                 </div>
@@ -2192,7 +2191,7 @@ describe("Helmet", () => {
 
             expect(markup)
                 .to.be.a("string")
-                .that.equals(`<div><title ${HELMET_ATTRIBUTE}="true"></title></div>`);
+                .that.equals(`<div><title ${HELMET_ATTRIBUTE}="true"> </title></div>`);
 
             expect(head.base).to.exist;
             expect(head.base).to.respondTo("toString");
@@ -2238,7 +2237,7 @@ describe("Helmet", () => {
         });
 
         it("does not render undefined attribute values", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     script={[
                         {
@@ -2264,7 +2263,7 @@ describe("Helmet", () => {
 
     describe("misc", () => {
         it("throws in rewind() when a DOM is present", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title={"Fancy title"}
                 />,
@@ -2277,7 +2276,7 @@ describe("Helmet", () => {
         });
 
         it("lets you read current state in peek() whether or not a DOM is present", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title={"Fancy title"}
                 />,
@@ -2291,7 +2290,7 @@ describe("Helmet", () => {
         });
 
         it("will html encode string", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     meta={[
                         {"name": "description", "content": "This is \"quoted\" text and & and '."}
@@ -2318,7 +2317,7 @@ describe("Helmet", () => {
 
         it("will not change the DOM if it is recevies identical props", () => {
             const spy = sinon.spy();
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     meta={[{"name": "description", "content": "Test description"}]}
                     title={"Test Title"}
@@ -2328,7 +2327,7 @@ describe("Helmet", () => {
             );
 
             // Re-rendering will pass new props to an already mounted Helmet
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     meta={[{"name": "description", "content": "Test description"}]}
                     title={"Test Title"}
@@ -2344,7 +2343,7 @@ describe("Helmet", () => {
             const spy = sinon.spy();
             let addedTags;
             let removedTags;
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     link={[{"href": "http://localhost/style.css", "rel": "stylesheet", "type": "text/css"}]}
                     meta={[{"name": "description", "content": "Test description"}]}
@@ -2359,14 +2358,14 @@ describe("Helmet", () => {
 
             expect(addedTags).to.have.property("metaTags");
             expect(addedTags.metaTags).to.have.deep.property("[0]");
-            expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="Test description" data-react-helmet="true">`);
+            expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="Test description" ${HELMET_ATTRIBUTE}="true">`);
             expect(addedTags).to.have.property("linkTags");
             expect(addedTags.linkTags).to.have.deep.property("[0]");
-            expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/style.css" rel="stylesheet" type="text/css" data-react-helmet="true">`);
+            expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/style.css" rel="stylesheet" type="text/css" ${HELMET_ATTRIBUTE}="true">`);
             expect(removedTags).to.be.empty;
 
             // Re-rendering will pass new props to an already mounted Helmet
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     link={[
                         {"href": "http://localhost/style.css", "rel": "stylesheet", "type": "text/css"},
@@ -2384,18 +2383,18 @@ describe("Helmet", () => {
 
             expect(addedTags).to.have.property("metaTags");
             expect(addedTags.metaTags).to.have.deep.property("[0]");
-            expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="New description" data-react-helmet="true">`);
+            expect(addedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="New description" ${HELMET_ATTRIBUTE}="true">`);
             expect(addedTags).to.have.property("linkTags");
             expect(addedTags.linkTags).to.have.deep.property("[0]");
-            expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/style2.css" rel="stylesheet" type="text/css" data-react-helmet="true">`);
+            expect(addedTags.linkTags[0].outerHTML).to.equal(`<link href="http://localhost/style2.css" rel="stylesheet" type="text/css" ${HELMET_ATTRIBUTE}="true">`);
             expect(removedTags).to.have.property("metaTags");
             expect(removedTags.metaTags).to.have.deep.property("[0]");
-            expect(removedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="Test description" data-react-helmet="true">`);
+            expect(removedTags.metaTags[0].outerHTML).to.equal(`<meta name="description" content="Test description" ${HELMET_ATTRIBUTE}="true">`);
             expect(removedTags).to.not.have.property("linkTags");
         });
 
         it("can not nest Helmets", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     title={"Test Title"}
                 >
@@ -2410,7 +2409,7 @@ describe("Helmet", () => {
         });
 
         it("will recognize valid tags regardless of attribute ordering", () => {
-            ReactDOM.render(
+            Inferno.render(
                 <Helmet
                     meta={[{"content": "Test Description", "name": "description"}]}
                 />,

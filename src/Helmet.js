@@ -1,14 +1,17 @@
-import React from "react";
-import withSideEffect from "react-side-effect";
+import Inferno from "inferno";
+import InfernoComponent from "inferno-component";
+import createElement from "inferno-create-element"
+import withSideEffect from "inferno-side-effect";
+//import propTypes from "propTypes";
 import deepEqual from "deep-equal";
 import objectAssign from "object-assign";
 import {
     TAG_NAMES,
     TAG_PROPERTIES,
-    REACT_TAG_MAP
+    INFERNO_TAG_MAP
 } from "./HelmetConstants.js";
 
-const HELMET_ATTRIBUTE = "data-react-helmet";
+const HELMET_ATTRIBUTE = "data-inferno-helmet";
 
 const encodeSpecialCharacters = (str) => {
     return String(str)
@@ -16,7 +19,7 @@ const encodeSpecialCharacters = (str) => {
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#x27;");
+            .replace(/'/g, "&#039;");
 };
 
 const getInnermostProperty = (propsList, property) => {
@@ -45,7 +48,7 @@ const getTitleFromPropsList = (propsList) => {
 };
 
 const getOnChangeClientState = (propsList) => {
-    return getInnermostProperty(propsList, "onChangeClientState") ||(() => {});
+    return getInnermostProperty(propsList, "onChangeClientState") || (() => {});
 };
 
 const getAttributesFromPropsList = (tagType, propsList) => {
@@ -276,34 +279,33 @@ const generateTagsAsString = (type, tags) => tags.reduce((str, tag) => {
         }, "");
 
     const tagContent = tag.innerHTML || tag.cssText || "";
-
     const isSelfClosing = [TAG_NAMES.NOSCRIPT, TAG_NAMES.SCRIPT, TAG_NAMES.STYLE].indexOf(type) === -1;
 
-    return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${isSelfClosing ? `/>` : `>${tagContent}</${type}>`}`;
+    return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${isSelfClosing ? `>` : `>${tagContent}</${type}>`}`;
 }, "");
 
-const generateTitleAsReactComponent = (type, title, attributes) => {
+const generateTitleAsInfernoComponent = (type, title, attributes) => {
     // assigning into an array to define toString function on it
     const initProps = {
         key: title,
-        [HELMET_ATTRIBUTE]: true
+        [HELMET_ATTRIBUTE]: "true"
     };
     const props = Object.keys(attributes).reduce((obj, key) => {
-        obj[(REACT_TAG_MAP[key] || key)] = attributes[key];
+        obj[(INFERNO_TAG_MAP[key] || key)] = attributes[key];
         return obj;
     }, initProps);
 
-    return [React.createElement(TAG_NAMES.TITLE, props, title)];
+    return [createElement(TAG_NAMES.TITLE, props, title)];
 };
 
-const generateTagsAsReactComponent = (type, tags) => tags.map((tag, i) => {
+const generateTagsAsInfernoComponent = (type, tags) => tags.map((tag, i) => {
     const mappedTag = {
         key: i,
-        [HELMET_ATTRIBUTE]: true
+        [HELMET_ATTRIBUTE]: "true"
     };
 
     Object.keys(tag).forEach((attribute) => {
-        const mappedAttribute = REACT_TAG_MAP[attribute] || attribute;
+        const mappedAttribute = INFERNO_TAG_MAP[attribute] || attribute;
 
         if (mappedAttribute === "innerHTML" || mappedAttribute === "cssText") {
             const content = tag.innerHTML || tag.cssText;
@@ -313,14 +315,14 @@ const generateTagsAsReactComponent = (type, tags) => tags.map((tag, i) => {
         }
     });
 
-    return React.createElement(type, mappedTag);
+    return createElement(type, mappedTag);
 });
 
 const getMethodsForTag = (type, tags) => {
     switch (type) {
         case TAG_NAMES.TITLE:
             return {
-                toComponent: () => generateTitleAsReactComponent(type, tags.title, tags.titleAttributes),
+                toComponent: () => generateTitleAsInfernoComponent(type, tags.title, tags.titleAttributes),
                 toString: () => generateTitleAsString(type, tags.title, tags.titleAttributes)
             };
         case TAG_NAMES.HTML:
@@ -330,7 +332,7 @@ const getMethodsForTag = (type, tags) => {
             };
         default:
             return {
-                toComponent: () => generateTagsAsReactComponent(type, tags),
+                toComponent: () => generateTagsAsInfernoComponent(type, tags),
                 toString: () => generateTagsAsString(type, tags)
             };
     }
@@ -347,7 +349,7 @@ const mapStateOnServer = ({htmlAttributes, title, titleAttributes, baseTag, meta
     style: getMethodsForTag(TAG_NAMES.STYLE, styleTags)
 });
 
-const Helmet = (Component) => class HelmetWrapper extends React.Component {
+const Helmet = (Component) => class HelmetWrapper extends InfernoComponent {
     /**
      * @param {Object} htmlAttributes: {"lang": "en", "amp": undefined}
      * @param {String} title: "Title"
@@ -362,22 +364,8 @@ const Helmet = (Component) => class HelmetWrapper extends React.Component {
      * @param {Array} style: [{"type": "text/css", "cssText": "div{ display: block; color: blue; }"}]
      * @param {Function} onChangeClientState: "(newState) => console.log(newState)"
      */
-    static propTypes = {
-        htmlAttributes: React.PropTypes.object,
-        title: React.PropTypes.string,
-        defaultTitle: React.PropTypes.string,
-        titleTemplate: React.PropTypes.string,
-        titleAttributes: React.PropTypes.object,
-        base: React.PropTypes.object,
-        meta: React.PropTypes.arrayOf(React.PropTypes.object),
-        link: React.PropTypes.arrayOf(React.PropTypes.object),
-        script: React.PropTypes.arrayOf(React.PropTypes.object),
-        noscript: React.PropTypes.arrayOf(React.PropTypes.object),
-        style: React.PropTypes.arrayOf(React.PropTypes.object),
-        onChangeClientState: React.PropTypes.func
-    }
 
-    // Component.peek comes from react-side-effect:
+    // Component.peek comes from inferno-side-effect:
     // For testing, you may use a static peek() method available on the returned component.
     // It lets you get the current state without resetting the mounted instance stack.
     // Don’t use it for anything other than testing.
