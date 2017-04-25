@@ -1,6 +1,6 @@
 import Inferno from "inferno";
 import InfernoComponent from "inferno-component";
-import createElement from "inferno-create-element"
+import createElement from "inferno-create-element";
 import withSideEffect from "inferno-side-effect";
 //import propTypes from "propTypes";
 import deepEqual from "deep-equal";

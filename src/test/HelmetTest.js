@@ -1571,7 +1571,7 @@ describe("Helmet", () => {
     });
 
     describe("server", () => {
-        const stringifiedHtmlAttributes = `lang="ga" class="myClassName"`;
+        const stringifiedHtmlAttributes = `class="myClassName" lang="ga"`;
         const stringifiedTitle = `<title ${HELMET_ATTRIBUTE}="true">Dangerous &lt;script&gt; include</title>`;
         const stringifiedTitleWithItemprop = `<title ${HELMET_ATTRIBUTE}="true" itemprop="name">Title with Itemprop</title>`;
         const stringifiedBaseTag = `<base ${HELMET_ATTRIBUTE}="true" target="_blank" href="http://localhost/">`;
@@ -2100,8 +2100,8 @@ describe("Helmet", () => {
             Inferno.render(
                 <Helmet
                     htmlAttributes={{
-                        lang: "ga",
-                        className: "myClassName"
+                        className: "myClassName",
+                        lang: "ga"
                     }}
                 />,
                 container
@@ -2125,8 +2125,8 @@ describe("Helmet", () => {
             Inferno.render(
                 <Helmet
                     htmlAttributes={{
-                        lang: "ga",
-                        class: "myClassName"
+                        class: "myClassName",
+                        lang: "ga"
                     }}
                 />,
                 container
