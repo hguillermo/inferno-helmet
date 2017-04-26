@@ -1,7 +1,7 @@
 {
   "name": "inferno-helmet",
   "description": "A document head manager for Inferno",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "main": "./lib/Helmet.js",
   "author": "NFL <engineers@nfl.com>",
   "contributors": [
