@@ -52,15 +52,15 @@ module.exports = function (config) {
         webpack: {
             devtool: "inline-source-map",
             module: {
-                preLoaders: [{
+                loaders: [{
                     test: /(\.js(x)?)$/,
                     // exclude this dirs from coverage
                     exclude: /(node_modules|bower_components)\//,
-                    loader: "isparta"
+                    loader: "isparta-loader"
                 }]
             },
             resolve: {
-                extensions: ["", ".web.js", ".js"]
+                extensions: [".web.js", ".js"]
             },
             watch: true
         },
@@ -98,8 +98,8 @@ module.exports = function (config) {
         // - PhantomJS
         // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
         browsers: process.env.TRAVIS
-            ? ["ChromeTravis", "PhantomJS"]
-            : ["Chrome", "PhantomJS"],
+            ? ["ChromeTravis"]
+            : ["Chrome"],
 
         customLaunchers: {
             ChromeTravis: {
